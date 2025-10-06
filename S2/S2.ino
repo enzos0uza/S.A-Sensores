@@ -1,6 +1,6 @@
-#include <Wifi.h>
-const String SSID = "nomeDaRede";
-const String PASS = "senhaDaRede";
+#include <WiFi.h>
+const String SSID = "FIESC_IOT_EDU";
+const String PASS = "8120gv08";
 void setup() {
   Serial.begin(115200);
   Serial.println("Conectando ao WiFi");
