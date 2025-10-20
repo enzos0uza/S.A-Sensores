@@ -35,5 +35,10 @@ void setup() {
 }
 
 void loop() {
-
+  String mensagem = "Leandro: ";
+  mensagem += "oi";
+  
+  mqtt.publish(Topic.c_str(), mensagem.c_str());
+  mqtt.loop();
+  delay(2000);
 }
