@@ -13,11 +13,18 @@ const String broker_user = "";
 const String broker_pass = ""; 
 const String MyTopic = "Topico_Leandro_123";
 const String OtherTopic = "Topico_Enzo_123";
+const String iluminacaoTopic = "S1/iluminacao";
+const String presencaTopic1 = "S2/presenca1";
+const String presencaTopic2 = "S2/presenca2";
 
-#define led 2
+#define led 23
+#define echoP1 18
+#define echoP2 19
 
 void setup() {
-  pinMode(2, OUTPUT);
+  pinMode(led, OUTPUT);
+  pinMode(echoP1, INPUT);
+  pinMode(echoP2, INPUT);
   Serial.begin(115200);
   Serial.println("Conectando ao Wifi");
   WiFi.begin(SSID, PASS);
@@ -41,15 +48,20 @@ void setup() {
 }
 
 void loop() {
-  String mensagem = "";
-  if(Serial.available()>0){
-    mensagem += Serial.readStringUntil('\n');
-    mqtt.publish(OtherTopic.c_str(), mensagem.c_str());
+ long duration1 = pulseIn(echoP1, HIGH);
+  long duration2 = pulseIn(echoP2, HIGH);
 
-  }
+  float distance1 = duration1 * 0.0343 / 2;
+  float distance2 = duration2 * 0.0343 / 2;
+
+  String mensagem1 = String(distance1);
+  String mensagem2 = String(distance2);
+
+  mqtt.publish(OtherTopic.c_str(), mensagem1.c_str());  
+  mqtt.publish(OtherTopic.c_str(), mensagem2.c_str());  
 
   mqtt.loop();
-  delay(2000);
+  delay(2000);  
 
 }
 
@@ -60,11 +72,12 @@ void callback(char* topic, byte* payload, unsigned int length) {
   }
   Serial.print("Recebidos: ");
   Serial.println(mensagem);
-  if (mensagem == "Enzo: acender") {
-    digitalWrite(2, HIGH);
-    Serial.print("AAAAH EU VO G: ");
-  } else {
-    digitalWrite(2, LOW);
-    Serial.print("errado  ");
+if (String(topic) == iluminacaoTopic) {  
+    float iluminacao = mensagem.toFloat();  
+    if (iluminacao > 100) {
+      digitalWrite(led, LOW); 
+    } else {
+      digitalWrite(led, HIGH); 
+    }
   }
 }
