@@ -1,4 +1,4 @@
-#include <WiFiClientSecure.h>
+#include <WiFi.h>
 #include <PubSubClient.h>
 
 WiFiClient client;
@@ -7,21 +7,10 @@ PubSubClient mqtt(client);
 const String SSID = "FIESC_IOT_EDU";
 const String PASS = "8120gv08";
 
-<<<<<<< HEAD
-const int PORT = 8883;
-const String URL = "eba0a505da6c475ab42417c558e8c674.s1.eu.hivemq.cloud";
-
-const String broker_user = "";
-const String broker_pass = "";
-=======
 const int PORT = 1883;
 const String URL = "test.mosquitto.org";
 const String broker_user = ""; 
 const String broker_pass = ""; 
-const String MyTopic = "Topico_Bueno_123";
-const String OtherTopic = "Topico_Monteiro_123";
->>>>>>> b4e70b8ba8143078a5f995eb9c1a3d79c7eae8c8
-
 //meus tópicos
 const String S3_presenca = "presenca ";
 const String Servo1 = " Servo1 ";
@@ -33,125 +22,101 @@ const String S2_P2 = "S2/P2";
 const String iluminacao = "iluminacao";
 const String S3_presenca = "presenca";
 
+#define led 19
+#define red 14  
+#define green 18  
+#define blue 17
+
+#define echo 18
+
+Servo servo1;
+Servo servo2;
+
 void setup() {
-<<<<<<< HEAD
-  pinMode(2, OUTPUT);
-  pinMode(3, OUTPUT);
-  pinMode(4, OUTPUT);
-  pinMode(5, OUTPUT);
-=======
-  pinMode(2 ,OUTPUT);
->>>>>>> b4e70b8ba8143078a5f995eb9c1a3d79c7eae8c8
+  pinMode(led, OUTPUT);
+  pinMode(echo, INPUT);
+  servo1.attach(26); // Pino para servo 1
+  servo2.attach(25); // Pino para servo 2
+
   Serial.begin(115200);
   Serial.println("Conectando ao Wifi");
   WiFi.begin(SSID, PASS);
-  while (WiFi.status() != WL_CONNECTED) {
+  while(WiFi.status() != WL_CONNECTED){
     Serial.print(".");
     delay(200);
   }
   Serial.println("\nConectado!");
   Serial.println("Conectando ao Broker...");
   mqtt.setServer(URL.c_str(), PORT);
-<<<<<<< HEAD
-  while (!mqtt.connected()) {
-=======
   while(!mqtt.connected()){
->>>>>>> b4e70b8ba8143078a5f995eb9c1a3d79c7eae8c8
     String ID = "S1-";
     ID += String(random(0xffff), HEX);
     mqtt.connect(ID.c_str(), broker_user.c_str(), broker_pass.c_str());
     delay(200);
     Serial.print(".");
   }
-<<<<<<< HEAD
-  mqtt.subscribe(S2_P1.c_str());
-  mqtt.subscribe(S2_P2.c_str());
-  mqtt.subscribe(iluminacao.c_str());
   mqtt.subscribe(S3_presenca.c_str());
-=======
-  mqtt.subscribe(MyTopic.c_str());
->>>>>>> b4e70b8ba8143078a5f995eb9c1a3d79c7eae8c8
+  mqtt.subscribe(Servo1.c_str());
+  mqtt.subscribe(Servo2.c_str());
   mqtt.setCallback(callback);
   Serial.println("\n Conectado ao broker com sucesso!");
 }
 
 void loop() {
-  String mensagem = "to de boa na lagoa";
-<<<<<<< HEAD
-  if (Serial.available() > 0) {
-    mensagem += Serial.readStringUntil('\n');
-    mqtt.publish(S3_presenca.c_str(), mensagem.c_str());
-    mqtt.publish(Servo1.c_str(), mensagem.c_str());
-    mqtt.publish(Servo2.c_str(), mensagem.c_str());
+  long duration = pulseIn(echo, HIGH);
+  float distance = duration * 0.0343 / 2;
+  float mensagem1 = String(distance); 
+  if (mensagem1 == 2){
+    mensagem2 = 90;
+    servo1.write(mensagem2);
   }
+  servo2.write(mensagem3);
 
+  mqtt.publish(S3_presenca.c_str(), mensagem1.c_str());
+  mqtt.publish(Servo1.c_str(), mensagem2.c_str());
+  mqtt.publish(Servo2.c_str(), mensagem3.c_str());
   mqtt.loop();
-  delay(2000);
-}
-
-void callback(char* topic, byte* payload, unsigned int length) {
-  String mensagem = "";
-  for (int i = 0; i < length; i++) {
-=======
-  if(Serial.available()>0){
-    mensagem += Serial.readStringUntil('\n');
-    mqtt.publish(OtherTopic.c_str(), mensagem.c_str());
-
-  }
-
-  mqtt.loop();
-  delay(2000);
+  delay(2000);  
 
 }
 
 void callback(char* topic, byte* payload, unsigned int length) {
   String mensagem = "";
   for(int i = 0; i < length; i++){
->>>>>>> b4e70b8ba8143078a5f995eb9c1a3d79c7eae8c8
     mensagem += (char)payload[i];
   }
   Serial.print("Recebidos: ");
   Serial.println(mensagem);
-<<<<<<< HEAD
-
-  if (topic == "iluminacao") {
+if (topic == "iluminacao") {
     if (mensagem == "acender") {
-      digitalWrite(2, HIGHT);
+      digitalWrite(led, HIGHT);
     }else{
-      digitalWrite(2, LOW);
+      digitalWrite(led, LOW);
     }
   }
 
   if (topic == "S3_presenca") {
     if (mensagem == "acender") {
-      digitalWrite(3, HIGHT);
+      digitalWrite(led, IGHT);
     }else{
-      digitalWrite(3, LOW);
+      digitalWrite(led, LOW);
     }
   }
 
   if (topic == "S2_P1") {
     if (mensagem == "acender") {
-      digitalWrite(4, HIGHT);
+      digitalWrite(led, HIGHT);
     }else{
-      digitalWrite(4, LOW);
+      digitalWrite(led, LOW);
     }
   }
 
   if (topic == "S2_P2") {
     if (mensagem == "acender") {
-      digitalWrite(5, HIGHT);
+      digitalWrite(led, HIGHT);
     }else{
-      digitalWrite(5, LOW);
+      digitalWrite(led, LOW);
     }
   }
 }
-=======
-  if(mensagem == "marééé!!marééé!!"){
-    digitalWrite(2, HIGH);
-  }else{
-    digitalWrite(2, LOW);
-  }
-  
 }
->>>>>>> b4e70b8ba8143078a5f995eb9c1a3d79c7eae8c8
