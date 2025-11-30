@@ -97,26 +97,27 @@ if (topic == "iluminacao") {
 
   if (topic == "S3_presenca") {
     if (mensagem == "acender") {
-      digitalWrite(led, IGHT);
+    servo2.write(90)
     }else{
-      digitalWrite(led, LOW);
+    servo2.write(0)
     }
   }
 
   if (topic == "S2_P1") {
-    if (mensagem == "acender") {
-      digitalWrite(led, HIGHT);
+    if (mensagem <= 5>) {
+      servo1.write(120)
     }else{
-      digitalWrite(led, LOW);
+      servo1.write(0)
     }
   }
 
   if (topic == "S2_P2") {
     if (mensagem == "acender") {
-      digitalWrite(led, HIGHT);
-    }else{
-      digitalWrite(led, LOW);
-    }
+    servo1.write(90)
+    servo2.write(90)
+  }else{
+    servo1.write(0)
+    servo2.write(0)
   }
 }
 }
