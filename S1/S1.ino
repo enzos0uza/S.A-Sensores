@@ -5,19 +5,19 @@
 WiFiClient client;
 PubSubClient mqtt(client);
 
-const String SSID = "FIESC_IOT_EDU";
-const String PASS = "8120gv08";
+const char* SSID = "FIESC_IOT_EDU";
+const char* PASS = "8120gv08";
 
-const int PORT = 1883;
-const String URL = "test.mosquitto.org";
-const String broker_user = ""; 
-const String broker_pass = ""; 
+const int PORT = 8883;
+const String URL = "eba0a505da6c475ab42417c558e8c674.s1.eu.hivemq.cloud";
+const String broker_user = "sesi"; 
+const String broker_pass = "SofiaForte"; 
 
 //definir topics
-const String temperatura = "topic";
-const String umidade = "topic";
-const String iluminacao = "topic";
-const String S1_presenca = "topic";
+const String temperatura = "sensorTemp";
+const String umidade = "sensorUmid";
+const String iluminacao = "sensorIlu";
+const String S1_presenca = "sensorUmidpic";
 
 //outros topics
 const String S1_iluminacao = "topic";

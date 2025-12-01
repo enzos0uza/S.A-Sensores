@@ -5,13 +5,13 @@
 WiFiClient client;
 PubSubClient mqtt(client);
 
-const String SSID = "FIESC_IOT_EDU";
-const String PASS = "8120gv08";
+const char* SSID = "FIESC_IOT_EDU";
+const char* PASS = "8120gv08";
 
 const int PORT = 8883;
 const String URL = "eba0a505da6c475ab42417c558e8c674.s1.eu.hivemq.cloud";
-const String broker_user = ""; 
-const String broker_pass = ""; 
+const String broker_user = "sesi"; 
+const String broker_pass = "SofiaForte"; 
 //meus tópicos
 const String S3_presenca = "presenca ";
 const String Servo1 = " Servo1 ";
@@ -84,7 +84,7 @@ void callback(char* topic, byte* payload, unsigned int length) {
   Serial.print("Recebidos: ");
   Serial.println(mensagem);
 if (topic == "iluminacao") {
-    if (mensagem == "acender") {
+    if (mensagem => 100) {
       digitalWrite(led, HIGHT);
     }else{
       digitalWrite(led, LOW);
