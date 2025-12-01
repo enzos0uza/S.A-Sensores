@@ -1,5 +1,6 @@
 #include <WiFi.h>
 #include <PubSubClient.h>
+#include <Servo.h>
 
 WiFiClient client;
 PubSubClient mqtt(client);
