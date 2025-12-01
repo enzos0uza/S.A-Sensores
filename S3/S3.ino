@@ -7,8 +7,8 @@ PubSubClient mqtt(client);
 const String SSID = "FIESC_IOT_EDU";
 const String PASS = "8120gv08";
 
-const int PORT = 1883;
-const String URL = "test.mosquitto.org";
+const int PORT = 8883;
+const String URL = "eba0a505da6c475ab42417c558e8c674.s1.eu.hivemq.cloud";
 const String broker_user = ""; 
 const String broker_pass = ""; 
 //meus tópicos
@@ -66,11 +66,6 @@ void loop() {
   long duration = pulseIn(echo, HIGH);
   float distance = duration * 0.0343 / 2;
   float mensagem1 = String(distance); 
-  if (mensagem1 == 2){
-    mensagem2 = 90;
-    servo1.write(mensagem2);
-  }
-  servo2.write(mensagem3);
 
   mqtt.publish(S3_presenca.c_str(), mensagem1.c_str());
   mqtt.publish(Servo1.c_str(), mensagem2.c_str());
@@ -96,7 +91,7 @@ if (topic == "iluminacao") {
   }
 
   if (topic == "S3_presenca") {
-    if (mensagem == "acender") {
+    if (mensagem <= 5>) {
     servo2.write(90)
     }else{
     servo2.write(0)
@@ -112,7 +107,7 @@ if (topic == "iluminacao") {
   }
 
   if (topic == "S2_P2") {
-    if (mensagem == "acender") {
+    if (mensagem <= 5>) {
     servo1.write(90)
     servo2.write(90)
   }else{
